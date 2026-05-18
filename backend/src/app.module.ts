@@ -3,7 +3,10 @@ import {ServeStaticModule} from "@nestjs/serve-static";
 import {ConfigModule} from "@nestjs/config";
 import * as path from "node:path";
 
-import {configProvider} from "./app.config.provider";
+import {configProvider} from "./appProviders/app.config.provider";
+import dbConnectProvider from "./appProviders/app.connection.provider";
+import { FilmsModule } from './films/films.module';
+import { OrderModule } from './order/order.module';
 
 @Module({
   imports: [
@@ -11,9 +14,11 @@ import {configProvider} from "./app.config.provider";
           isGlobal: true,
           cache: true
       }),
+	FilmsModule,
+	OrderModule,
       // @todo: Добавьте раздачу статических файлов из public
   ],
   controllers: [],
-  providers: [configProvider],
+  providers: [ configProvider, dbConnectProvider],
 })
 export class AppModule {}
