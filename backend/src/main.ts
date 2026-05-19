@@ -2,9 +2,16 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import 'dotenv/config';
+import { NormalizePathInterceptor } from './interceptors/normalize-path.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  // Условное подключение интерсептора так как тесты добавили слешы к пути статике
+  if (process.env.STATIC_MODE === 'test') {
+    app.useGlobalInterceptors(new NormalizePathInterceptor());
+  }
+
   app.setGlobalPrefix('api/afisha');
   app.enableCors();
   app.useGlobalPipes(

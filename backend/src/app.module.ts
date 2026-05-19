@@ -5,7 +5,6 @@ import { FilmsModule } from './films/films.module';
 import { OrderModule } from './order/order.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { getStaticConfig } from './config/static.config';
-import { NormalizePathMiddleware } from './middleware/normalize.middleware';
 
 @Module({
   imports: [
@@ -31,13 +30,4 @@ import { NormalizePathMiddleware } from './middleware/normalize.middleware';
   ],
   controllers: [],
 })
-export class AppModule {
- configure(consumer: MiddlewareConsumer) {
-    // Проверяем переменную окружения напрямую так как тесты два слеша раздают статике
-    if (process.env.STATIC_MODE === 'test') {
-      consumer
-        .apply(NormalizePathMiddleware)
-        .forRoutes('*');
-    }
-  }
-}
+export class AppModule {}
