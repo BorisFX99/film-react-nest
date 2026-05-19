@@ -8,7 +8,11 @@ import { getStaticConfig } from './config/static.config';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
+    ServeStaticModule.forRootAsync({
+      useFactory: getStaticConfig,
+      inject: [ConfigService],
+    }),
+    ConfigModule.forRoot({  
       isGlobal: true,
       cache: true,
     }),
@@ -19,10 +23,6 @@ import { getStaticConfig } from './config/static.config';
           'mongodb://localhost:27017/prac',
         ),
       }),
-      inject: [ConfigService],
-    }),
-    ServeStaticModule.forRootAsync({
-      useFactory: getStaticConfig,
       inject: [ConfigService],
     }),
     OrderModule,

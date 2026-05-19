@@ -11,7 +11,6 @@ async function bootstrap() {
   app.use(normalizePathMiddleware);
   console.log('Path normalization middleware enabled (test mode)');
 
-
   app.setGlobalPrefix('api/afisha');
   app.enableCors();
   app.useGlobalPipes(
