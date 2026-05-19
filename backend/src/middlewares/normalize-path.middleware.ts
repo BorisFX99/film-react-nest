@@ -9,7 +9,7 @@ export const normalizePathMiddleware = (
   req.url = req.url.replace(/\/{2,}/g, '/');
 
   if (originalUrl !== req.url) {
-    console.log(`🔧 Normalized: ${originalUrl} → ${req.url}`);
+    console.log(`Normalized: ${originalUrl} → ${req.url}`);
   }
 
   next();
