@@ -1,10 +1,11 @@
-import { Module } from '@nestjs/common';
+import { Module, MiddlewareConsumer } from '@nestjs/common';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { FilmsModule } from './films/films.module';
 import { OrderModule } from './order/order.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { getStaticConfig } from './config/static.config';
+import { NormalizePathMiddleware } from './middleware/normalize.middleware';
 
 @Module({
   imports: [
@@ -30,4 +31,13 @@ import { getStaticConfig } from './config/static.config';
   ],
   controllers: [],
 })
-export class AppModule {}
+export class AppModule {
+ configure(consumer: MiddlewareConsumer) {
+    // Проверяем переменную окружения напрямую так как тесты два слеша раздают статике
+    if (process.env.STATIC_MODE === 'test') {
+      consumer
+        .apply(NormalizePathMiddleware)
+        .forRoutes('*');
+    }
+  }
+}
