@@ -2,14 +2,15 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import 'dotenv/config';
-import { NormalizePathInterceptor } from './interceptors/normalize-path.interceptor';
+import { normalizePathMiddleware } from './middlewares/normalize-path.middleware';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // Условное подключение интерсептора так как тесты добавили слешы к пути статике
+  // Middleware для нормализации путей (работает до статики от двойных слешей тестов)
   if (process.env.STATIC_MODE === 'test') {
-    app.useGlobalInterceptors(new NormalizePathInterceptor());
+    app.use(normalizePathMiddleware);
+    console.log('Path normalization middleware enabled (test mode)');
   }
 
   app.setGlobalPrefix('api/afisha');
