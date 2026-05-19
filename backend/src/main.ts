@@ -8,10 +8,9 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   // Middleware для нормализации путей (работает до статики от двойных слешей тестов)
-  if (process.env.STATIC_MODE === 'test') {
-    app.use(normalizePathMiddleware);
-    console.log('Path normalization middleware enabled (test mode)');
-  }
+  app.use(normalizePathMiddleware);
+  console.log('Path normalization middleware enabled (test mode)');
+
 
   app.setGlobalPrefix('api/afisha');
   app.enableCors();
