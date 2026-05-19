@@ -1,12 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateFilmDto } from './dto/create-film.dto';
-import { UpdateFilmDto } from './dto/update-film.dto';
 import FilmsRepository from '../repository/mongo.films.repository';
 import { Film } from './entities/film.entity';
 
 @Injectable()
 export class FilmsService {
-
   constructor(private readonly filmsRepository: FilmsRepository) {}
 
   // create(createFilmDto: CreateFilmDto) {
@@ -18,17 +15,17 @@ export class FilmsService {
     return {
       total: films.length,
       items: films,
-    }
+    };
   }
 
   async findScheduleByFilmId(id: string) {
     const searchedFilm = await this.filmsRepository.findFilmById(id);
     if (!searchedFilm)
-       throw new NotFoundException(`Film with ID ${id} not found`);
+      throw new NotFoundException(`Film with ID ${id} not found`);
     return {
-       total: searchedFilm.schedule.length,
-       items: searchedFilm.schedule,
-    }
+      total: searchedFilm.schedule.length,
+      items: searchedFilm.schedule,
+    };
   }
 
   // findOne(id: number) {
