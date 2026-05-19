@@ -1,11 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import * as path from 'node:path';
-
 import { FilmsModule } from './films/films.module';
 import { OrderModule } from './order/order.module';
 import { MongooseModule } from '@nestjs/mongoose';
+import { getStaticConfig } from './config/static.config';
 
 @Module({
   imports: [
@@ -22,12 +21,9 @@ import { MongooseModule } from '@nestjs/mongoose';
       }),
       inject: [ConfigService],
     }),
-    ServeStaticModule.forRoot({
-      rootPath: path.join(__dirname, '..', 'public', 'content', 'afisha'),
-      serveRoot: '/',
-      serveStaticOptions: {
-        index: false,
-      },
+    ServeStaticModule.forRootAsync({
+      useFactory: getStaticConfig,
+      inject: [ConfigService],
     }),
     OrderModule,
     FilmsModule,
