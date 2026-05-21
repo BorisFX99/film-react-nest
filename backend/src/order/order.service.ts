@@ -4,7 +4,6 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { CreateOrderDto } from './dto/create-order.dto';
-import { v4 as uuidv4 } from 'uuid';
 import { OrdersRepository } from '../repository/mongo.orders.repository';
 import FilmsRepository from '../repository/mongo.films.repository';
 
@@ -57,17 +56,11 @@ export class OrderService {
       });
     }
 
-    // Генерируем id для билетов
-    const ticketsWithIds = createOrderDto.tickets.map((ticket) => ({
-      ...ticket,
-      id: uuidv4(),
-    }));
-
     // Сохраняю заказ в БД
     const savedTickets = await this.ordersRepository.create({
       email: createOrderDto.email,
       phone: createOrderDto.phone,
-      tickets: ticketsWithIds,
+      tickets: createOrderDto.tickets,
     });
 
     // теперь обновляем занятые места в фильмах
@@ -86,29 +79,4 @@ export class OrderService {
       items: savedTickets,
     };
   }
-
-  //   const mappedOrder = {
-  //     ...createOrderDto,
-  //     tickets: createOrderDto.tickets.map(ticket => ({
-  //       ...ticket,
-  //       id: uuidv4(),
-  //     }))
-  //   }
-  // }
-
-  // findAll() {
-  //   return `This action returns all order`;
-  // }
-
-  // findOne(id: number) {
-  //   return `This action returns a #${id} order`;
-  // }
-
-  // update(id: number, updateOrderDto: UpdateOrderDto) {
-  //   return `This action updates a #${id} order`;
-  // }
-
-  // remove(id: number) {
-  //   return `This action removes a #${id} order`;
-  // }
 }

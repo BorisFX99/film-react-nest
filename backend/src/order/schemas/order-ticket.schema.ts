@@ -1,12 +1,17 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
+import { randomUUID } from 'crypto';
 
 export type OrderTicketDocument = HydratedDocument<OrderTicket>;
 
 @Schema({ _id: false }) // Это вложенный документ, без отдельного _id
 export class OrderTicket {
-  @Prop({ required: true })
-  id: string; // кастомная через uuid
+  @Prop({
+    required: true,
+    unique: true,
+    default: () => randomUUID(), // Генерируем UUID при создании (убрал эту логику из сервиса)
+  })
+  id: string;
 
   @Prop({ required: true, type: String })
   film: string;

@@ -20,5 +20,5 @@ const configs = {
 
 export const getStaticConfig = (configService: ConfigService) => {
   const staticMode = configService.get<string>('STATIC_MODE', 'test');
-   return configs[staticMode] || configs.test;;
+  return configs[staticMode] || configs.test;
 };

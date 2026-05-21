@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Film } from '../films/entities/film.entity';
 import { FilmResponseDto } from '../films/dto/film-response.dto';
 import { FilmDocument } from '../films/schemas/film.schema';
 
@@ -9,8 +8,8 @@ import { FilmDocument } from '../films/schemas/film.schema';
 class FilmsRepository {
   constructor(@InjectModel('Film') private filmModel: Model<FilmDocument>) {}
 
-  async findAll(): Promise<Film[]> {
-    const films: Film[] = await this.filmModel.find({}, { schedule: 0 }).lean();
+  async findAll(): Promise<FilmResponseDto[]> {
+    const films = await this.filmModel.find({}, { schedule: 0 }).lean();
     return films;
   }
 

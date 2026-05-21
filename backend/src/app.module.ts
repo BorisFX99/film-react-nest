@@ -12,7 +12,7 @@ import { getStaticConfig } from './config/static.config';
       useFactory: getStaticConfig,
       inject: [ConfigService],
     }),
-    ConfigModule.forRoot({  
+    ConfigModule.forRoot({
       isGlobal: true,
       cache: true,
     }),
