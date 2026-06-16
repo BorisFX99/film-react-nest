@@ -17,9 +17,10 @@ export class FilmsService {
     const searchedFilm = await this.filmsRepository.findFilmById(id);
     if (!searchedFilm)
       throw new NotFoundException(`Film with ID ${id} not found`);
+    const schedule = searchedFilm.schedule || [];
     return {
-      total: searchedFilm.schedules.length,
-      items: searchedFilm.schedules,
+      total: schedule.length,
+      items: schedule,
     };
   }
 }

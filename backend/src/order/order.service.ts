@@ -29,8 +29,8 @@ export class OrderService {
       }
 
       // Ищем нужную сессию в расписании фильма
-      const session = searchedFilm.schedules?.find(
-        (s) => s.id === ticket.session && s.daytime === ticket.daytime,
+      const session = searchedFilm.schedule?.find(
+        (s) => s.id === ticket.session,
       );
 
       if (!session) {

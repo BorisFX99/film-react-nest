@@ -7,7 +7,7 @@ import {
   Min,
   Max,
 } from 'class-validator';
-import { Type, Expose } from 'class-transformer';
+import { Type, Expose, Transform } from 'class-transformer';
 import { ScheduleDto } from './schedule.dto';
 
 export class FilmResponseDto {
@@ -52,8 +52,8 @@ export class FilmResponseDto {
   cover: string;
 
   @Expose()
+  @Transform(({ obj }) => obj.schedules || [])  // ← КЛЮЧЕВОЕ ИЗМЕНЕНИЕ!
   @ValidateNested({ each: true })
   @Type(() => ScheduleDto)
-  @IsOptional()
-  schedules?: ScheduleDto[];
+  schedule: ScheduleDto[];
 }
