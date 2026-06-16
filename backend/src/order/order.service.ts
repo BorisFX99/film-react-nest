@@ -4,8 +4,8 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { CreateOrderDto } from './dto/create-order.dto';
-import { OrdersRepository } from '../repository/mongo.orders.repository';
-import FilmsRepository from '../repository/mongo.films.repository';
+import OrdersRepository from '../repository/typeorm.orders.repository';
+import FilmsRepository from '../repository/typeorm.films.repository';
 
 @Injectable()
 export class OrderService {
@@ -17,9 +17,9 @@ export class OrderService {
   ) {}
 
   async create(createOrderDto: CreateOrderDto) {
-    const ticketsToUpdate = []; // коллекция для обновления мест
+    const ticketsToUpdate = [];
 
-    // 1. Проверяем каждый билет (иду по dto)
+    // 1. Проверяем каждый билет
     for (const ticket of createOrderDto.tickets) {
       // Ищем фильм по ID
       const searchedFilm = await this.filmsRepository.findFilmById(ticket.film);
@@ -29,7 +29,7 @@ export class OrderService {
       }
 
       // Ищем нужную сессию в расписании фильма
-      const session = searchedFilm.schedule?.find(
+      const session = searchedFilm.schedules?.find(
         (s) => s.id === ticket.session && s.daytime === ticket.daytime,
       );
 
@@ -47,7 +47,6 @@ export class OrderService {
         );
       }
 
-      // Запоминаем место для бронирования (рука не поднялась не обновить базу)
       ticketsToUpdate.push({
         filmId: ticket.film,
         sessionId: ticket.session,
@@ -56,14 +55,14 @@ export class OrderService {
       });
     }
 
-    // Сохраняю заказ в БД
+    // 2. Сохраняем заказ в БД (репозиторий)
     const savedTickets = await this.ordersRepository.create({
       email: createOrderDto.email,
       phone: createOrderDto.phone,
       tickets: createOrderDto.tickets,
     });
 
-    // теперь обновляем занятые места в фильмах
+    // 3. Обновляем занятые места (репозиторий)
     for (const update of ticketsToUpdate) {
       await this.filmsRepository.addTakenSeat(
         update.filmId,
@@ -73,7 +72,7 @@ export class OrderService {
       );
     }
 
-    // 4. Возвращаем ответ в нужном формате
+    // 4. Возвращаем ответ
     return {
       total: savedTickets.length,
       items: savedTickets,

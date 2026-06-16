@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import FilmsRepository from '../repository/mongo.films.repository';
+import FilmsRepository from '../repository/typeorm.films.repository';
 
 @Injectable()
 export class FilmsService {
@@ -18,8 +18,8 @@ export class FilmsService {
     if (!searchedFilm)
       throw new NotFoundException(`Film with ID ${id} not found`);
     return {
-      total: searchedFilm.schedule.length,
-      items: searchedFilm.schedule,
+      total: searchedFilm.schedules.length,
+      items: searchedFilm.schedules,
     };
   }
 }
