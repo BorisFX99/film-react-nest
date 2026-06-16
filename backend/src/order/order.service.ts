@@ -50,7 +50,6 @@ export class OrderService {
       ticketsToUpdate.push({
         filmId: ticket.film,
         sessionId: ticket.session,
-        daytime: ticket.daytime,
         seatKey: seatKey,
       });
     }
@@ -67,7 +66,6 @@ export class OrderService {
       await this.filmsRepository.addTakenSeat(
         update.filmId,
         update.sessionId,
-        update.daytime,
         update.seatKey,
       );
     }

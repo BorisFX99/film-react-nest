@@ -30,7 +30,7 @@ class OrdersRepository {
         orderId: savedOrder.id,
         film: ticket.film,
         session: ticket.session,
-        daytime: ticket.daytime,
+        daytime: new Date(ticket.daytime),
         row: ticket.row,
         seat: ticket.seat,
         price: ticket.price,

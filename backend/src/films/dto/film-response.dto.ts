@@ -3,7 +3,6 @@ import {
   IsNumber,
   IsArray,
   ValidateNested,
-  IsOptional,
   Min,
   Max,
 } from 'class-validator';
@@ -52,7 +51,7 @@ export class FilmResponseDto {
   cover: string;
 
   @Expose()
-  @Transform(({ obj }) => obj.schedules || [])  // ← КЛЮЧЕВОЕ ИЗМЕНЕНИЕ!
+  @Transform(({ obj }) => obj.schedules || []) // ← КЛЮЧЕВОЕ ИЗМЕНЕНИЕ!
   @ValidateNested({ each: true })
   @Type(() => ScheduleDto)
   schedule: ScheduleDto[];

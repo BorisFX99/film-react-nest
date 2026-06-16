@@ -24,8 +24,8 @@ class FilmsRepository {
       excludeExtraneousValues: true, // только поля с маркером @Expose()
     });
 
-     // Гарантируем, что schedule всегда массив а то мало ли
-    return dtos.map(dto => ({
+    // Гарантируем, что schedule всегда массив а то мало ли
+    return dtos.map((dto) => ({
       ...dto,
       schedule: dto.schedule || [],
     }));
@@ -41,8 +41,8 @@ class FilmsRepository {
       excludeExtraneousValues: true,
     });
 
-     // 1. Проверь, что film.schedules существует
-  console.log('film.schedules:', film.schedules);
+    // 1. Проверь, что film.schedules существует
+    console.log('film.schedules:', film.schedules);
 
     // Гарантируем, что schedule всегда массив
     return {
@@ -54,7 +54,6 @@ class FilmsRepository {
   async addTakenSeat(
     filmId: string,
     sessionId: string,
-    daytime: string,
     seatKey: string,
   ): Promise<void> {
     await this.scheduleRepository
@@ -68,8 +67,7 @@ class FilmsRepository {
       END`,
       })
       .where('id = :sessionId', { sessionId })
-      .andWhere('filmId = :filmId', { filmId })
-      .andWhere('daytime = :daytime', { daytime })
+      .andWhere('"filmId" = :filmId', { filmId })
       .andWhere(`NOT (string_to_array(taken, ',') && ARRAY['${seatKey}'])`) // ← проверка, что места нет
       .execute();
   }
