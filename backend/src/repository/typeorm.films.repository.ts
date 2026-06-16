@@ -68,7 +68,11 @@ class FilmsRepository {
       })
       .where('id = :sessionId', { sessionId })
       .andWhere('"filmId" = :filmId', { filmId })
-      .andWhere(`NOT (string_to_array(taken, ',') && ARRAY['${seatKey}'])`) // ← проверка, что места нет
+      .andWhere(`(
+          taken IS NULL OR
+          taken = '' OR 
+          NOT (string_to_array(taken, ',') && ARRAY['${seatKey}'])
+        )`) // ← проверка, что места нет
       .execute();
   }
 }
