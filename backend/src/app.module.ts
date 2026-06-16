@@ -32,7 +32,7 @@ import { Ticket } from './order/entities/ticket.entity';
         port: configService.get<number>('DATABASE_PORT', 5432),
         username: configService.get<string>('DATABASE_USERNAME', 'prac'),
         password: configService.get<string>('DATABASE_PASSWORD'),
-        database: configService.get<string>('DATABASE_NAME', 'prac'),
+        database: configService.get<string>('DATABASE_NAME') || 'films',
         entities: [Film, Schedule, Order, Ticket],
         synchronize: false, // таблицы созданы вручную
         logging: true, // для отладки
