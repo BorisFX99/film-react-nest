@@ -10,6 +10,8 @@ import { Schedule } from './films/entities/schedule.entity';
 import { Order } from './order/entities/order.entity';
 import { Ticket } from './order/entities/ticket.entity';
 
+type TDatabaseDriver = 'postgres' | 'mongodb';
+
 @Module({
   imports: [
     // 1. Статика
@@ -27,7 +29,7 @@ import { Ticket } from './order/entities/ticket.entity';
     // 3. TypeORM вместо MongoDB
     TypeOrmModule.forRootAsync({
       useFactory: async (configService: ConfigService) => ({
-        type: 'postgres',
+        type: configService.get<TDatabaseDriver>('DATABASE_DRIVER', 'postgres'),
         host: configService.get<string>('DATABASE_HOST', 'localhost'),
         port: configService.get<number>('DATABASE_PORT', 5432),
         username: configService.get<string>('DATABASE_USERNAME', 'prac'),
