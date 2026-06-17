@@ -32,9 +32,9 @@ import { Ticket } from './order/entities/ticket.entity';
         port: configService.get<number>('DATABASE_PORT', 5432),
         username: configService.get<string>('DATABASE_USERNAME', 'prac'),
         password: configService.get<string>('DATABASE_PASSWORD'),
-        database: configService.get<string>('DATABASE_NAME') || 'prac', //prac
+        database: configService.get<string>('DATABASE_NAME') || 'films', //prac
         entities: [Film, Schedule, Order, Ticket],
-        synchronize: true, // тесты не запускают миграцию для ордера покупки билета и не создают таблицы
+        synchronize: false,
       }),
       inject: [ConfigService],
     }),
