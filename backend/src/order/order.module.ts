@@ -1,15 +1,16 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { OrderService } from './order.service';
 import { OrderController } from './order.controller';
-import { MongooseModule } from '@nestjs/mongoose';
-import { Order, OrderSchema } from './schemas/order.schema';
-import { OrdersRepository } from '../repository/mongo.orders.repository';
+import OrdersRepository from '../repository/typeorm.orders.repository';
 import { FilmsModule } from '../films/films.module';
+import { Order } from './entities/order.entity';
+import { Ticket } from './entities/ticket.entity';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: Order.name, schema: OrderSchema }]),
-    FilmsModule,
+    TypeOrmModule.forFeature([Order, Ticket]), // регистрируем сущности
+    FilmsModule, // для доступа к FilmsRepository
   ],
   controllers: [OrderController],
   providers: [OrderService, OrdersRepository],
