@@ -34,7 +34,7 @@ import { Ticket } from './order/entities/ticket.entity';
         password: configService.get<string>('DATABASE_PASSWORD'),
         database: configService.get<string>('DATABASE_NAME') || 'films', //prac
         entities: [Film, Schedule, Order, Ticket],
-        synchronize: false, // таблицы созданы вручную
+        synchronize: true, // тесты не запускают миграцию для ордера покупки билета и не создают таблицы
       }),
       inject: [ConfigService],
     }),
